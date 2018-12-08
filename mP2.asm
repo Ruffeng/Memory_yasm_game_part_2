@@ -455,8 +455,50 @@ moveCursorP2:
    push rbp
    mov  rbp, rsp
 
+   moveCurorSwitch:
+   mov al, dil
+   
+   cmp al, 'i' ; UP
+   jne moveCursorCaseK
+   
+   cmp WORD[rsi], 0
+   jle moveCursorEndSwitch
+   dec WORD[rsi]
+   jmp moveCursorEndSwitch
+    
+   
+   moveCursorCaseK:
+   cmp al, 'k'  ; DOWN
+   jne moveCursorCaseJ
+   
+   cmp WORD[rsi], ROWDIM - 1 
+   jge moveCursorEndSwitch
+   inc WORD[rsi]
+   jmp moveCursorEndSwitch
+   
+   
+   moveCursorCaseJ:
+   cmp al, 'j' ; LEFT
+   jne moveCursorCaseL
+   
+   cmp WORD[rsi + 2], 0
+   jle moveCursorEndSwitch
+   dec WORD[rsi + 2]
+   jmp moveCursorEndSwitch
+   
+   
+   moveCursorCaseL:
+   cmp al, 'l'
+   jne moveCursorEndSwitch
+    
+   cmp WORD[rsi + 2], COLDIM - 1
+   jge moveCursorEndSwitch
+   inc WORD[rsi + 2]
+   jmp moveCursorEndSwitch
    
          
+   moveCursorEndSwitch:
+
    mov rsp, rbp
    pop rbp
    ret
