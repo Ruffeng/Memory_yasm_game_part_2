@@ -256,7 +256,7 @@ posCurScreenP2:
    mov rdi, 0
    mov rsi, 0
    
-   posCurScreenRox:
+   posCurScreenRow:
    mov di, WORD[rax + 0]
    shl di, 1  ;(rc[0]*2)
    add di, 10 ;10+(rc[0]*2)
@@ -372,8 +372,55 @@ showDigitsP2:
 updateBoardP2:
    push rbp
    mov  rbp, rsp
+    
+   updateBoardSetup:
+   push rdi ; Save in stack the moves
+   push rsi  ; SAve in stack the pairs
+   
+   mov r8d, 0 ; Value for I  
+   mov r9d, 0 ; Value for J 
+   mov r10d, 0 ; Byte to move in the matrix
+   mov rdi, 10 ; Row
+    
+   updateBoardIterationI:
+   cmp r8d, ROWDIM
+   JGE updateBoardEndIterationI
+   mov rsi, 12 ; col
+    
+   updateBoardIterationJ:
+   cmp r9d, COLDIM
+   JGE updateBoardEndIterationJ
+    
+	   updateBoardGoAndPrint:
+	   call gotoxyP2
+	   push rdi
+	   mov edi, DWORD[mOpenCards + r10d]
+	   inc r10d
+	   call printchP2
+	   pop rdi
+   
+   add rsi, 4
+   inc r9d
+   jmp updateBoardIterationJ
+    
+   updateBoardEndIterationJ:
+   add rdi, 2
+   mov r9d, 0 ; Reset J
+   inc r8d
+   jmp updateBoardIterationI
    
    
+   updateBoardEndIterationI:
+   updateBoardShowPairs:
+   pop rdx ; saved stack coming from pairs
+   mov rdi, 19
+   mov rsi, 24
+   call showDigitsP2
+   
+   updateBoardShowMoves:
+   pop rdx ; saved stack coming from moves
+   mov  rsi, 15
+   call showDigitsP2
    
    mov rsp, rbp
    pop rbp
