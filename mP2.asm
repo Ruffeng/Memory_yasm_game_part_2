@@ -530,6 +530,7 @@ calcIndexP2:
    push rbp
    mov  rbp, rsp
    
+   mov rax, 0
    mov edx, edi ; Current row 
    mov al, COLDIM ; Implicit multiplier
    
@@ -584,7 +585,34 @@ openCardP2:
    push rbp
    mov  rbp, rsp
 
+   openCardSetVariables: 
+   push rsi ; status
+   mov r10w, WORD[rdi] ;row
+   mov r11w, WORD[rdi + 2] ;col
    
+   openCardManageMMoves:
+   mov r12d, esi ; -> pointing to [x][0]
+   mov WORD[mMoves + r12d ], r10w
+   add r12d, 2 ;  -> pointing to [x][1]
+   mov WORD[mMoves + r12d], r11w
+   
+   openCardSetupCalcIndex:
+   mov edi , r10d
+   mov esi , r11d
+   call calcIndexP2 ; Get Index with the register RAX
+   
+   
+   openCardIfStatement:
+   cmp BYTE[mCards + eax], 'x'
+   je openCardEndIf
+   mov ecx, DWORD[mCards+eax]
+   mov BYTE[mOpenCards + eax], cl  ;  mOpenCards[i][j] = mCards[i][j];
+   mov BYTE[mCards+eax], 'x' ; mCards[i][j] = 'x';
+   
+   inc rsi
+   
+   openCardEndIf:
+   mov rax, rsi
          
    mov rsp, rbp
    pop rbp
