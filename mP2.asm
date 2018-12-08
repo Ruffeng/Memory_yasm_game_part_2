@@ -302,8 +302,39 @@ showDigitsP2:
    push rbp
    mov  rbp, rsp
    
+   showDigitsSetup:
+   mov eax, edx 
+   mov edx, 0
+   
+   showDigitsDivision: 
+   mov ecx, 10 
+   div ecx ;Quocient -> EAX ; Residu -> EDX
+   
+   showDigitsDivisionTenth: 
+   add eax, '0'
+   
+   ShowDigitsPrintTenth:
+   push rdi
+   call gotoxyP2
+   mov edi, eax
+   call printchP2
+   pop rdi
+   
+  ShowDigitsDivisionUnit:
+   add edx, '0'
+  
+  ShowDigitsPrintUnit:
+   push rdi
+   inc rsi ; INC column
+   call gotoxyP2
+   mov edi, edx
+   call printchP2
+   pop rdi
    
    
+	; PROPOSTA: showDigitsDivisonX i showDigitsPrint es podrien refactoritzar a un altre mètode, on per exemple accepta per paràmetre.
+	; de R8 i R9, i allà fer les conversions necessàries per cridar tant gotoxyP2 com printchP2.
+	; Penso que seria una manera més net eficient d'implementar aquest codi. No obstant això, no ho faig, ja que no és la finalitat de l'exercici
    mov rsp, rbp
    pop rbp
    ret
