@@ -520,8 +520,8 @@ moveCursorP2:
 ; Cap.
 ;
 ; Paràmetres d'entrada : 
-; rsi(esi): Fila de la matriu (4x5).
-; rdi(edi): Columna de la matriu (4x5).
+; rdi(edi): Fila de la matriu (4x5).
+; rsi(esi): Columna de la matriu (4x5).
 ;
 ; Paràmetres de sortida: 
 ; rax(eax) : Índex per a accedir a la matriu (4x5).
@@ -529,7 +529,14 @@ moveCursorP2:
 calcIndexP2:
    push rbp
    mov  rbp, rsp
-
+   
+   mov edx, edi ; Current row 
+   mov al, COLDIM ; Implicit multiplier
+   
+   mul dl ; Result in AL since it's not a huge number => row*COLDIM 
+   
+   mov ecx, esi 
+   add al, cl ; (row*COLDIM) + col
    
          
    mov rsp, rbp
