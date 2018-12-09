@@ -225,7 +225,6 @@ getchP2:
    pop rbp
    ret 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Posicionar el cursor a la pantalla, dins el tauler, en funció de la
 ; posició del cursor dins la matriu, indicada pel vector (rc) 
@@ -252,6 +251,9 @@ posCurScreenP2:
    mov  rbp, rsp
    
    posCurScreenSetup:
+   push rdi
+   push rsi
+   
    mov rax, rdi
    mov rdi, 0
    mov rsi, 0
@@ -268,6 +270,8 @@ posCurScreenP2:
    
    call gotoxyP2
    
+   pop rsi
+   pop rdi
    mov rsp, rbp
    pop rbp
    ret
@@ -302,7 +306,24 @@ showDigitsP2:
    push rbp
    mov  rbp, rsp
    
+   push rax
+   push rbx
+   push rcx
+   push rdx
+   push rsi
+   push rdi
+   push r8
+   push r9
+   push r10
+   push r11
+   push r12
+   push r13
+   push r14
+   push r15
+
+   
    showDigitsSetup:
+   
    mov eax, edx 
    mov edx, 0
    
@@ -335,6 +356,23 @@ showDigitsP2:
 	; PROPOSTA: showDigitsDivisonX i showDigitsPrint es podrien refactoritzar a un altre mètode, on per exemple accepta per paràmetre.
 	; de R8 i R9, i allà fer les conversions necessàries per cridar tant gotoxyP2 com printchP2.
 	; Penso que seria una manera més net eficient d'implementar aquest codi. No obstant això, no ho faig, ja que no és la finalitat de l'exercici
+  
+   pop r15
+   pop r14
+   pop r13
+   pop r12
+   pop r11
+   pop r10
+   pop r9
+   pop r8
+   pop rdi
+   pop rsi
+   pop rdx
+   pop rcx
+   pop rbx
+   pop rax
+
+  
    mov rsp, rbp
    pop rbp
    ret
@@ -372,11 +410,25 @@ showDigitsP2:
 updateBoardP2:
    push rbp
    mov  rbp, rsp
-    
-   updateBoardSetup:
-   push rdi ; Save in stack the moves
-   push rsi  ; SAve in stack the pairs
    
+   push rax
+   push rbx
+   push rcx
+   push rdx
+   push rsi
+   push rdi
+   push r8
+   push r9
+   push r10
+   push r11
+   push r12
+   push r13
+   push r14
+   push r15
+   
+   updateBoardSetup:
+   push rdi ; moves
+   push rsi ; pairs
    mov r8d, 0 ; Value for I  
    mov r9d, 0 ; Value for J 
    mov r10d, 0 ; Byte to move in the matrix
@@ -421,7 +473,22 @@ updateBoardP2:
    pop rdx ; saved stack coming from moves
    mov  rsi, 15
    call showDigitsP2
-   
+ 
+   pop r15
+   pop r14
+   pop r13
+   pop r12
+   pop r11
+   pop r10
+   pop r9
+   pop r8
+   pop rdi
+   pop rsi
+   pop rdx
+   pop rcx
+   pop rbx
+   pop rax
+
    mov rsp, rbp
    pop rbp
    ret
@@ -454,6 +521,21 @@ updateBoardP2:
 moveCursorP2:  
    push rbp
    mov  rbp, rsp
+  
+   push rax
+   push rbx
+   push rcx
+   push rdx
+   push rsi
+   push rdi
+   push r8
+   push r9
+   push r10
+   push r11
+   push r12
+   push r13
+   push r14
+   push r15
 
    moveCurorSwitch:
    mov al, dil
@@ -499,6 +581,21 @@ moveCursorP2:
          
    moveCursorEndSwitch:
 
+   pop r15
+   pop r14
+   pop r13
+   pop r12
+   pop r11
+   pop r10
+   pop r9
+   pop r8
+   pop rdi
+   pop rsi
+   pop rdx
+   pop rcx
+   pop rbx
+   pop rax
+   
    mov rsp, rbp
    pop rbp
    ret
@@ -530,6 +627,22 @@ calcIndexP2:
    push rbp
    mov  rbp, rsp
    
+   push rbx
+   push rcx
+   push rdx
+   push rsi
+   push rdi
+   push r8
+   push r9
+   push r10
+   push r11
+   push r12
+   push r13
+   push r14
+   push r15
+
+   
+   
    mov rax, 0
    mov edx, edi ; Current row 
    mov al, COLDIM ; Implicit multiplier
@@ -538,8 +651,22 @@ calcIndexP2:
    
    mov ecx, esi 
    add al, cl ; (row*COLDIM) + col
+    
+   pop r15
+   pop r14
+   pop r13
+   pop r12
+   pop r11
+   pop r10
+   pop r9
+   pop r8
+   pop rdi
+   pop rsi
+   pop rdx
+   pop rcx
+   pop rbx
    
-         
+   
    mov rsp, rbp
    pop rbp
    ret
@@ -584,9 +711,25 @@ calcIndexP2:
 openCardP2:  
    push rbp
    mov  rbp, rsp
+     
+   push rbx
+   push rcx
+   push rdx
+   push rsi
+   push rdi
+   push r8
+   push r9
+   push r10
+   push r11
+   push r12
+   push r13
+   push r14
+   push r15
+
+   
 
    openCardSetVariables: 
-   push rsi ; status
+   push rsi ; state
    mov r10w, WORD[rdi] ;row
    mov r11w, WORD[rdi + 2] ;col
    
@@ -615,7 +758,21 @@ openCardP2:
    
    openCardEndIf:
    mov rax, rsi
-         
+   
+   pop r15
+   pop r14
+   pop r13
+   pop r12
+   pop r11
+   pop r10
+   pop r9
+   pop r8
+   pop rdi
+   pop rsi
+   pop rdx
+   pop rcx
+   pop rbx
+       
    mov rsp, rbp
    pop rbp
    ret
@@ -652,6 +809,20 @@ openCardP2:
 checkPairsP2:
    push rbp
    mov  rbp, rsp
+   
+   push rbx
+   push rcx
+   push rdx
+   push rsi
+   push rdi
+   push r8
+   push r9
+   push r10
+   push r11
+   push r12
+   push r13
+   push r14
+   push r15
 
  
    checkPairsFirstCard:
@@ -685,6 +856,19 @@ checkPairsP2:
    mov rax, 3
    
    checkPairsEndIf:
+   pop r15
+   pop r14
+   pop r13
+   pop r12
+   pop r11
+   pop r10
+   pop r9
+   pop r8
+   pop rdi
+   pop rsi
+   pop rdx
+   pop rcx
+   pop rbx
    
    mov rsp, rbp
    pop rbp
