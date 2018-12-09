@@ -590,8 +590,9 @@ openCardP2:
    mov r10w, WORD[rdi] ;row
    mov r11w, WORD[rdi + 2] ;col
    
-   openCardManageMMoves:
-   mov r12d, esi ; -> pointing to [x][0]
+   openCardManageMMoves:   ; pointing concrete direction based on the bit status
+   shl esi, 2
+   mov r12d, esi      
    mov WORD[mMoves + r12d ], r10w
    add r12d, 2 ;  -> pointing to [x][1]
    mov WORD[mMoves + r12d], r11w
@@ -609,6 +610,7 @@ openCardP2:
    mov BYTE[mOpenCards + eax], cl  ;  mOpenCards[i][j] = mCards[i][j];
    mov BYTE[mCards+eax], 'x' ; mCards[i][j] = 'x';
    
+   pop rsi
    inc rsi
    
    openCardEndIf:
