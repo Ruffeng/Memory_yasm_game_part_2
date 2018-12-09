@@ -591,17 +591,8 @@ openCardP2:
    mov r11w, WORD[rdi + 2] ;col
    
    openCardManageMMoves:   ; pointing concrete direction based on the bit status
-     openCardManageMMovesIf:
-     cmp esi, 0
-     je openCardManageMMovesElse
-     mov r12d, 4
-     jmp openCardManageMMovesEndIf
-     
-     openCardManageMMovesElse:
-     mov r12d, 0
-     
-     openCardManageMMovesEndIf:
-     
+   shl esi, 2
+   mov r12d, esi      
    mov WORD[mMoves + r12d ], r10w
    add r12d, 2 ;  -> pointing to [x][1]
    mov WORD[mMoves + r12d], r11w
