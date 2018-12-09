@@ -1,6 +1,6 @@
 section .data               
 ;Canviar Nom i Cognom per les vostres dades.
-developer db "_Nom_ _Cognom1_",0
+developer db "Ruben_Suet",0
 
 ;Constants que també estan definides en C.
 ROWDIM  equ 4       ;files de la matriu.
@@ -729,7 +729,7 @@ openCardP2:
    
 
    openCardSetVariables: 
-   push rsi ; state
+   mov r8d, esi
    mov r10w, WORD[rdi] ;row
    mov r11w, WORD[rdi + 2] ;col
    
@@ -747,17 +747,16 @@ openCardP2:
    
    
    openCardIfStatement:
-   cmp BYTE[mCards + eax], 'x'
+   cmp BYTE[mCards + eax], 'X'
    je openCardEndIf
-   mov ecx, DWORD[mCards+eax]
+   mov cl, BYTE[mCards+eax]
    mov BYTE[mOpenCards + eax], cl  ;  mOpenCards[i][j] = mCards[i][j];
-   mov BYTE[mCards+eax], 'x' ; mCards[i][j] = 'x';
+   mov BYTE[mCards+eax], 'X' ; mCards[i][j] = 'x';
    
-   pop rsi
-   inc rsi
+   inc r8d
    
    openCardEndIf:
-   mov rax, rsi
+   mov eax, r8d
    
    pop r15
    pop r14
@@ -846,9 +845,9 @@ checkPairsP2:
    
    checkPairsAreNotEqual:
    mov BYTE[mCards + r8d], bl
-   mov BYTE[mOpenCards + r8d], 'x'
-   mov BYTE[mCards + r9d], bl
-   mov BYTE[mOpenCards + r9d], 'x'
+   mov BYTE[mOpenCards + r8d], 'X'
+   mov BYTE[mCards + r9d], cl
+   mov BYTE[mOpenCards + r9d], 'X'
    mov rax, 4
    jmp checkPairsEndIf
    
