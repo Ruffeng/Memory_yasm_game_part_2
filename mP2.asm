@@ -653,7 +653,38 @@ checkPairsP2:
    push rbp
    mov  rbp, rsp
 
+ 
+   checkPairsFirstCard:
+   mov rdi, [mMoves]
+   mov rsi, [mMoves + 2]
+   call calcIndexP2
+   mov r8, rax
    
+   checkPairsSecondCard:
+   mov rdi, [mMoves + 4]
+   mov rsi, [mMoves + 6]
+   call calcIndexP2
+   mov r9, rax
+
+   checkPairsGetValues:
+   mov rbx, [mOpenCards + r8]
+   mov rcx, [mOpenCards + r9]
+   
+   cmp bl, cl
+   je checkPairsAreEqual
+   
+   checkPairsAreNotEqual:
+   mov BYTE[mCards + r8d], bl
+   mov BYTE[mOpenCards + r8d], 'x'
+   mov BYTE[mCards + r9d], bl
+   mov BYTE[mOpenCards + r9d], 'x'
+   mov rax, 4
+   jmp checkPairsEndIf
+   
+   checkPairsAreEqual:
+   mov rax, 3
+   
+   checkPairsEndIf:
    
    mov rsp, rbp
    pop rbp
